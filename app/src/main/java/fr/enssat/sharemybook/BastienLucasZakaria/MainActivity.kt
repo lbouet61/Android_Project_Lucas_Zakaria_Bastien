@@ -45,3 +45,11 @@ fun GreetingPreview() {
         Greeting("Android")
     }
 }
+
+fun GetBookInformations(isbn : String) {
+    // construire requete
+    
+    // envoyer requete
+
+    // récupérer infos
+}
