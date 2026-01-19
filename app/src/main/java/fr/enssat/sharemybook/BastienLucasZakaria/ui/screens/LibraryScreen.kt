@@ -18,7 +18,9 @@ import fr.enssat.sharemybook.BastienLucasZakaria.ui.viewmodel.LibraryViewModel
 @Composable
 fun LibraryScreen(
     library: Library,
-    viewModel: LibraryViewModel
+    viewModel: LibraryViewModel,
+    onNavigateBack: () -> Unit, // Le nom doit correspondre
+    onAddBook: () -> Unit
 ) {
     Scaffold(
         topBar = {
