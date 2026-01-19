@@ -14,6 +14,16 @@ class BookEntryViewModel(private val bookRepository: BookRepository) : ViewModel
     var bookUiState by mutableStateOf(BookUiState())
         private set
 
+
+    /**
+     * Updates the [bookUiState] with the value provided in the argument. This method also triggers
+     * a validation for input values.
+     */
+    fun updateUiState(bookDetails: BookDetails) {
+        bookUiState =
+            BookUiState(bookDetails = bookDetails, isEntryValid = validateInput(bookDetails))
+    }
+
     /**
      * Inserts a [Book] in the Room database
      */
