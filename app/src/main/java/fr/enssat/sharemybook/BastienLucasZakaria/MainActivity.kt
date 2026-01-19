@@ -35,17 +35,35 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-
-// Assurez-vous que votre thème utilise aussi le bon package
+//theme
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.tooling.preview.Preview
+import fr.enssat.sharemybook.BastienLucasZakaria.ui.screens.LibraryListScreen
+import fr.enssat.sharemybook.BastienLucasZakaria.ui.screens.LibraryScreen
 import fr.enssat.sharemybook.BastienLucasZakaria.ui.theme.ShareMyBookTheme
+import fr.enssat.sharemybook.BastienLucasZakaria.ui.viewmodel.LibraryViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContent {
             ShareMyBookTheme {
-                MainScreen()
+
+                // ViewModel principal
+                val viewModel: LibraryViewModel = viewModel()
+                val selectedLibrary by viewModel.selectedLibrary.collectAsState()
+
+                // Navigation simple entre les écrans
+                if (selectedLibrary == null) {
+                    LibraryListScreen(viewModel)
+                } else {
+                    LibraryScreen(
+                        library = selectedLibrary!!,
+                        viewModel = viewModel
+                    )
+                }
             }
         }
     }
