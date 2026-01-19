@@ -6,30 +6,24 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 /**
- * ViewModel pour le scanner de codes-barres (100% Kotlin).
- * Gère l'état du scan pour Bastien, Lucas et Zakaria.
+ * ViewModel pour le projet ShareMyBook.
+ * Gère l'état du scanner pour Bastien, Lucas et Zakaria.
  */
 class QRScannerViewModel : ViewModel() {
-    // État interne (Private)
+    // État interne privé
     private val _scanResult = MutableStateFlow<String?>(null)
 
-    // État exposé à la vue (Public & Read-only)
+    // État exposé à l'interface (Lecture seule)
     val scanResult: StateFlow<String?> = _scanResult.asStateFlow()
 
-    /**
-     * Reçoit le résultat de l'analyseur (ML Kit).
-     * @param result La valeur brute du code-barres (ISBN).
-     */
+    // Fonction appelée par l'analyseur de code-barres
     fun onScanResult(result: String) {
-        // Évite les mises à jour inutiles si le code est identique
         if (_scanResult.value != result) {
             _scanResult.value = result
         }
     }
 
-    /**
-     * Réinitialise le résultat pour permettre un nouveau scan.
-     */
+    // Pour relancer un scan sans fermer l'écran
     fun resetScan() {
         _scanResult.value = null
     }
