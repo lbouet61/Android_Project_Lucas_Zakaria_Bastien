@@ -10,8 +10,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import fr.enssat.sharemybook.BastienLucasZakaria.ui.screens.LibraryListScreen
-import fr.enssat.sharemybook.BastienLucasZakaria.ui.screens.LibraryScreen
+import fr.enssat.sharemybook.BastienLucasZakaria.ui.AppViewModelProvider
+import fr.enssat.sharemybook.BastienLucasZakaria.ui.book.BookEntryScreen
+import fr.enssat.sharemybook.BastienLucasZakaria.ui.screens.MainLibraryScreen
 import fr.enssat.sharemybook.BastienLucasZakaria.ui.theme.ShareMyBookTheme
 import fr.enssat.sharemybook.BastienLucasZakaria.ui.viewmodel.LibraryViewModel
 
@@ -24,42 +25,23 @@ class MainActivity : ComponentActivity() {
         setContent {
             ShareMyBookTheme {
                 val navController = rememberNavController()
-                val viewModel: LibraryViewModel = viewModel()
+                // Attention : assure-toi de passer le repository au ViewModel via une Factory
+                // ou un conteneur d'injection de dépendances comme AppViewModelProvider dans ton projet
+                val viewModel: LibraryViewModel = viewModel(factory = AppViewModelProvider.Factory)
 
-                NavHost(
-                    navController = navController,
-                    startDestination = "libraryList"
-                ) {
+                NavHost(navController = navController, startDestination = "main") {
 
-                    composable("libraryList") {
-                        LibraryListScreen(
+                    // ÉCRAN DE DÉMARRAGE : La liste des livres
+                    composable("main") {
+                        MainLibraryScreen(
                             viewModel = viewModel,
-                            onNavigateToLibrary = { libraryId ->
-                                //viewModel.selectLibrary(libraryId)
-                                navController.navigate("libraryDetail")
-                            }
+                            onManualEntry = { navController.navigate("bookEntry") }
                         )
                     }
 
-                    composable("libraryDetail") {
-                        // CORRECTION 1 : On récupère la bibliothèque sélectionnée depuis le ViewModel
-                        val selectedLibrary by viewModel.selectedLibrary.collectAsState()
-
-                        // On s'assure que la bibliothèque n'est pas null avant d'afficher l'écran
-                        selectedLibrary?.let { library ->
-                            LibraryScreen(
-                                // CORRECTION 2 : On passe la bibliothèque à l'écran
-                                library = library,
-                                viewModel = viewModel,
-                                // CORRECTION 3 : Le nom du paramètre est 'onNavigateBack'
-                                onNavigateBack = {
-                                    navController.popBackStack()
-                                },
-                                onAddBook = {
-                                    // La logique pour scanner un livre viendra ici
-                                }
-                            )
-                        }
+                    // ÉCRAN DE SAISIE MANUELLE
+                    composable("bookEntry") {
+                        BookEntryScreen()
                     }
                 }
             }

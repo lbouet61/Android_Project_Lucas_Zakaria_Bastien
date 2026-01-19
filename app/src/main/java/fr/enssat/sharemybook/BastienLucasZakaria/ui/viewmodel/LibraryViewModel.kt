@@ -1,33 +1,25 @@
 package fr.enssat.sharemybook.BastienLucasZakaria.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import androidx.lifecycle.viewModelScope
+import fr.enssat.sharemybook.BastienLucasZakaria.data.Book
+import fr.enssat.sharemybook.BastienLucasZakaria.data.BookRepository
 import kotlinx.coroutines.flow.StateFlow
-import fr.enssat.sharemybook.BastienLucasZakaria.domain.model.Library
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 
-class LibraryViewModel : ViewModel() {
+class LibraryViewModel(private val repository: BookRepository) : ViewModel() {
 
-    private val _libraries = MutableStateFlow<List<Library>>(emptyList())
-    val libraries: StateFlow<List<Library>> = _libraries
+    // On récupère le flux de tous les livres de la BDD
+    val allBooks: StateFlow<List<Book>> = repository.getAllBooksStream()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
 
-    private val _selectedLibrary = MutableStateFlow<Library?>(null)
-    val selectedLibrary: StateFlow<Library?> = _selectedLibrary
-
-    fun createLibrary(name: String) {
-        val newLibrary = Library(name = name)
-        _libraries.value = _libraries.value + newLibrary
-    }
-
-    fun selectLibrary(library: Library) {
-        _selectedLibrary.value = library
-    }
-
-    fun goBackToList() {
-        _selectedLibrary.value = null
-    }
-
+    // On garde cette fonction pour le bouton "Ajouter"
     fun onAddBookClicked() {
-        // PLUS TARD : lancer le scan ISBN
-        println("Ajouter un livre (scan à implémenter)")
+        // Logique de scan gérée par le collègue
     }
 }

@@ -64,6 +64,7 @@ dependencies {
     // --- 2. PERMISSIONS ---
     implementation("com.google.accompanist:accompanist-permissions:0.34.0")
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.material3)
 
     // --- 3. CAMERAX ---
     val cameraxVersion = "1.4.0"
