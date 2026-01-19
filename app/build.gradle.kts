@@ -5,6 +5,7 @@ plugins {
 }
 
 android {
+    // DOIT CORRESPONDRE AU PACKAGE DE VOS FICHIERS .KT
     namespace = "fr.enssat.sharemybook.BastienLucasZakaria"
     compileSdk = 36
 
@@ -40,7 +41,7 @@ android {
 }
 
 dependencies {
-
+    // --- 1. Bibliothèques de base ---
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -49,11 +50,23 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+
+    // --- 2. GESTION DES PERMISSIONS & VIEWMODEL ---
+    // Utilisation des versions directes pour éviter les erreurs "Unresolved reference"
+    implementation("com.google.accompanist:accompanist-permissions:0.34.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.0")
+
+    // --- 3. CAMERAX & ML KIT (IA pour le scan) ---
+    val cameraxVersion = "1.4.0"
+    implementation("androidx.camera:camera-core:$cameraxVersion")
+    implementation("androidx.camera:camera-camera2:$cameraxVersion")
+    implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
+    implementation("androidx.camera:camera-view:$cameraxVersion")
+    implementation("com.google.mlkit:barcode-scanning:17.2.0")
+
+    // --- 4. TESTS ---
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    debugImplementation(libs.androidx.compose.ui.tooling)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
