@@ -7,6 +7,7 @@ plugins {
 }
 
 android {
+    // DOIT CORRESPONDRE AU PACKAGE DE VOS FICHIERS .KT
     namespace = "fr.enssat.sharemybook.BastienLucasZakaria"
     compileSdk = 36
 
@@ -43,19 +44,47 @@ android {
 
 dependencies {
 
+    // --- 1. BIBLIOTHÈQUES DE BASE ---
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.activity.compose)
+
+    // Lifecycle
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.activity.compose)
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.6")
+
+    // Compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+
+    // --- 2. PERMISSIONS ---
+    implementation("com.google.accompanist:accompanist-permissions:0.34.0")
+
+    // --- 3. CAMERAX ---
+    val cameraxVersion = "1.4.0"
+    implementation("androidx.camera:camera-core:$cameraxVersion")
+    implementation("androidx.camera:camera-camera2:$cameraxVersion")
+    implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
+    implementation("androidx.camera:camera-view:$cameraxVersion")
+
+    // --- 4. ML KIT (Scan ISBN / QR) ---
+    implementation("com.google.mlkit:barcode-scanning:17.2.0")
+
+    // --- 5. JSON / API ---
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
+
+    // --- 6. IMAGES (Couvertures) ---
     implementation("io.coil-kt:coil-compose:2.6.0")
+
+    // --- 7. ROOM (Base de données locale) ---
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+
+    // --- 8. TESTS ---
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -63,8 +92,4 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
-
-    // Room
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
 }
